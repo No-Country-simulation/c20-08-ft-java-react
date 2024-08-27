@@ -1,5 +1,7 @@
 package com.c20_08_ft_java_react.backend.security;
 
+import com.c20_08_ft_java_react.backend.security.jwt.JwtFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,11 +15,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfigs {
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -25,7 +31,7 @@ public class SecurityConfigs {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( auth ->
                         auth.requestMatchers(HttpMethod.GET,
-                                        "/test"
+                                        "/test/public"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.POST,
                                         "/login"
@@ -33,7 +39,9 @@ public class SecurityConfigs {
                                 .anyRequest().authenticated()
                         )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable);
+
         return http.build();
     }
 

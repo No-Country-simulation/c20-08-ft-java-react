@@ -1,9 +1,9 @@
 package com.c20_08_ft_java_react.backend.models;
 
 import com.c20_08_ft_java_react.backend.enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,18 +20,26 @@ import java.util.List;
 @Table(name = "users")
 public class UserEntity implements UserDetails {
 
+    @Id
+    @UuidGenerator
+    private String id;
+
+    @Column(unique = true)
     private String username;
 
     private String password;
 
+    @Column(unique = true)
     private String email;
 
     private String names;
 
     private String lastnames;
 
+    @Column(unique = true)
     private String imageUrl;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     private boolean enabled;
