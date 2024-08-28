@@ -17,7 +17,7 @@ public class JwtService {
     public String generateToken(String username){
         Algorithm algorithm = Algorithm.HMAC256(Objects.requireNonNull(environment.getProperty("SECRET_KEY_TOKEN_LOGIN")));
         return JWT.create()
-                .withIssuer("andrea-namaste")
+                .withIssuer("issuer-app")
                 .withSubject(username)
                 .sign(algorithm);
     }
@@ -25,7 +25,24 @@ public class JwtService {
     public String validateAndGetSubject(String token) {
         Algorithm algorithm = Algorithm.HMAC256(Objects.requireNonNull(environment.getProperty("SECRET_KEY_TOKEN_LOGIN")));
         return JWT.require(algorithm)
-                .withIssuer("andrea-namaste")
+                .withIssuer("issuer-app")
+                .build()
+                .verify(token)
+                .getSubject();
+    }
+
+    public String generateTokenToActivateAccount(String username){
+        Algorithm algorithm = Algorithm.HMAC256(Objects.requireNonNull(environment.getProperty("SECRET_KEY_TOKEN_ACTIVATE_ACCOUNT")));
+        return JWT.create()
+                .withIssuer("issuer-app-activate")
+                .withSubject(username)
+                .sign(algorithm);
+    }
+
+    public String validateAndGetSubjectActivateAccount(String token){
+        Algorithm algorithm = Algorithm.HMAC256(Objects.requireNonNull(environment.getProperty("SECRET_KEY_TOKEN_ACTIVATE_ACCOUNT")));
+        return JWT.require(algorithm)
+                .withIssuer("issuer-app-activate")
                 .build()
                 .verify(token)
                 .getSubject();
