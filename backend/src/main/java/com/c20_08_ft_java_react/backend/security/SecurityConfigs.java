@@ -31,10 +31,12 @@ public class SecurityConfigs {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( auth ->
                         auth.requestMatchers(HttpMethod.GET,
-                                        "/test/public"
+                                        "/test/public",
+                                        "/api/v1/account/activate"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.POST,
-                                        "/login"
+                                        "/login",
+                                        "/api/v1/account/register"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                         )
