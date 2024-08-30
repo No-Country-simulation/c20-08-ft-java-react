@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: data_base
+    ports:
+      - "3306:3306"
+
+  app:
+    build: .
+    volumes:
+      - ./backend/:/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    entrypoint: ["sh", "-c", "mvn package -DskipTests && java -jar /app/target/backend-0.0.1-SNAPSHOT.jar"]
