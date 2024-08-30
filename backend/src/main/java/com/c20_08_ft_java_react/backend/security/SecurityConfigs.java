@@ -32,7 +32,9 @@ public class SecurityConfigs {
                 .authorizeHttpRequests( auth ->
                         auth.requestMatchers(HttpMethod.GET,
                                         "/test/public",
-                                        "/api/v1/account/activate"
+                                        "/api/v1/account/activate",
+                                        "/doc/**",
+                                        "/v3/api-docs/**"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.POST,
                                         "/login",
