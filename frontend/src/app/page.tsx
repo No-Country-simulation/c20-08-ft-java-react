@@ -1,11 +1,11 @@
-import Card from "@/UI/Components/card";
-import Image from "next/image";
+import Navbar from "@/UI/Components/navbar";
+import Principal from "./principal/page";
 
 export default function Home() {
   return (
-    <main>
-      <h1>Hola mundo</h1>
-      <Card></Card>
-    </main>
+    <>
+      <Navbar/>
+      <Principal/>
+    </>
   );
 }
